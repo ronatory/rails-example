@@ -8,4 +8,11 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
   include ApplicationHelper
+
+  # Returns true if a test user is logged in.
+  def is_logged_in?
+    # if nil, then true to false -> is_logged_in = false
+    # if not nil then false to true -> is_logged_in = true
+    !session[:user_id].nil?
+  end
 end
