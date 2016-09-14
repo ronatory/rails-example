@@ -4,6 +4,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:ron)
+    @non_activated_user = users(:link)
   end
 
   test "login with invalid information" do
@@ -52,12 +53,19 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "login with remembering" do
     log_in_as(@user, remember_me: '1')
-    assert_equal cookies['remember_token'], assigns(:user).remember_token
-    # assert_not_nil cookies['remember_token']
+    assert_not_nil cookies['remember_token']
   end
 
   test "login without remembering" do
     log_in_as(@user, remember_me: '0')
     assert_nil cookies['remember_token']
+  end
+
+  test "login as non-activated-user" do
+    get login_path
+    post login_path, params: { session: { email:    @non_activated_user.email,
+                                          password: 'password' } }
+    assert_not is_logged_in?
+    assert_redirected_to root_url
   end
 end
