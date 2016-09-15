@@ -1,0 +1,9 @@
+<% if @feed_items.any? %>
+  <ol class="microposts">
+    <!-- here rails knows to call the micropost partial because each elements
+    of @feed_items has class Micropost. This causes Rails to look for a partial
+    with the corresponding name in the views directory of the given resouce-->
+    <%= render @feed_items %>
+  </ol>
+  <%= will_paginate @feed_items %>
+<% end %>
