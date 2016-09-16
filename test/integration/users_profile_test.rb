@@ -14,6 +14,13 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_select 'h1', text: @user.name
     # checks for an img tag with class gravatar inside a top-level heading tag (h1)
     assert_select 'h1>img.gravatar'
+    assert_select 'div.stats', count: 1
+    assert_select 'strong#following', count: 1
+    assert_select 'strong#followers', count: 1
+    assert_select 'strong.stat', count: 2
+    assert_match @user.following.count.to_s, response.body
+    assert_match @user.followers.count.to_s, response.body
+
     # care about the number of microposts appear somewhere on the page
     assert_match @user.microposts.count.to_s, response.body
     assert_select 'div.pagination', count: 1
